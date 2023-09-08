@@ -1,0 +1,34 @@
+
+## DOMANDE ##
+
+Deve essere giocato o solo creato?									Solo creato.
+Da dove prendo le parole da mettere?   								Anche parolacce
+Devono esserci dei livelli di difficoltà?							Sì 						
+Ci deve essere un minimo di parole o un massimo da trovare? 		In base alla difficoltà
+Deve essere un'applicazione o web?									Multipiattaforma (MAC, LINUX, WINDOWS)
+Le parole nella lista devono essere in ordine alfabetico?			Sì
+Deve esserci la possibilità di stampare il documento?				Sì
+Si può fare solo a scuola o anche a casa?							Info a casa ma sviluppo a scuola
+Deve esserci anche la soluzione?									Sì
+Ci deve essere un tema nelle parole?								No								
+Quanto deve essere grande la griglia?								Quanto vogliamo.
+Possiamo ascoltare la musica mentre lavoriamo?						Telefono rimane là
+
+
+Tutte le direzioni.
+Parole default e parole passate dall'utente.
+Stampabile su un foglio A4
+Due modalità - Bambini piccoli (solo parole in giro) - Altra versione (Una volta risolto avrò una parola finale)
+Incroci possibili ma non sovrapposizione nella stessa direzione.
+Nessuna immagine (rettangolo semplice / Quadrato)
+Volendo si possono fare due quadrati/rettangoli separati e le parole presenti solo in uno dei due.
+Lettere tutte in maiuscolo
+Nessun accento nè apostrofi (Nella griglia)
+Scelta del FONT (Monospace di default + possiblità di cambiare)
+
+Modalità bambini - Difficoltà --> Quantità parole
+Modalità normale - Difficoltà --> Grandezza campo quindi + parole
+
+Riquadro attorno alle parole + Multicolonne
+Export .txt .png (solo JAVA)
+Export html .txt (solo JS)
