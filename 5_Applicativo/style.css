@@ -1,0 +1,19 @@
+body{
+    background-color: #bbb;
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+}
+
+.container {
+    height: 100vh;
+    margin: 0;
+}
+
+#titlePage{
+    margin-top: 0;
+    padding-top: 4vh;
+    font-size: 5vh;
+    text-transform: uppercase;
+    text-align: center;
+}
+
