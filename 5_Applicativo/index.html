@@ -20,9 +20,33 @@
 </head>
 <body>
 <div class="container">
-    <h1 id="titlePage">Parole incrociate</h1>
+    <h1 id="titlePage">Parole crociate</h1>
+	<div id="input">
+		<div class="containerInput">
+			<label>Modalità</label>
+			<select id="modalita">
+				<option value="bambini">Bambini</option>
+				<option value="adulti">Adulti</option>
+			</select>
+		</div>
+		<div class="containerInput">
+			<label>Difficoltà</label>
+			<select id="difficolta">
+				<option value="principiante">Principiante (7 parole, 100 lettere)</option>
+				<option value="dilettante">Dilettante (10 parole, 120 lettere)</option>
+				<option value="esperto">Esperto (15 parole, 150 lettere)</option>
+				<option value="leggenda">Leggenda (25 parole, 200 lettere)</option>
+			</select>
+		</div>
+		
+		<button onclick="generaTabella()">Genera tabella</button>
+	</div>
+	<div>
+		<div id="table"></div>
+	</div>
 </div>
 
 <script src="script.js"></script>
+<script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
 </body>
 </html>
