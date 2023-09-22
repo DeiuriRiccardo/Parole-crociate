@@ -2,7 +2,7 @@
 <html>
 <head>
 	<title>Parole Crociate - Rich</title>
-	<!-- data creazione: 08.09.2023 data ultima modifica: 08.09.2023 -->
+	<!-- data creazione: 08.09.2023 data ultima modifica: 15.09.2023 -->
 	<!-- O.S. = Windows Browser = google chrome-->
 
 	<meta charset="UTF-8">
@@ -18,30 +18,30 @@
         
     </style>
 </head>
-<body>
+<body >
 <div class="container">
     <h1 id="titlePage">Parole crociate</h1>
-	<div id="input">
-		<div class="containerInput">
-			<label>Modalità</label>
-			<select id="modalita">
-				<option value="bambini">Bambini</option>
-				<option value="adulti">Adulti</option>
-			</select>
+	<div id="content">
+		<div id="input">
+			<div class="containerInput">
+				<label>Modalità</label>
+				<select id="modalita">
+					<option value="bambini">Bambini</option>
+					<option value="adulti">Adulti</option>
+				</select>
+			</div>
+			<div class="containerInput">
+				<label>Difficoltà</label>
+				<select id="difficolta">
+					<option value="principiante">Principiante (7 parole, 100 lettere)</option>
+					<option value="dilettante">Dilettante (10 parole, 120 lettere)</option>
+					<option value="esperto">Esperto (15 parole, 150 lettere)</option>
+					<option value="leggenda">Leggenda (25 parole, 200 lettere)</option>
+				</select>
+			</div>
+			
+			<button onclick="generaTabella()">Genera tabella</button>
 		</div>
-		<div class="containerInput">
-			<label>Difficoltà</label>
-			<select id="difficolta">
-				<option value="principiante">Principiante (7 parole, 100 lettere)</option>
-				<option value="dilettante">Dilettante (10 parole, 120 lettere)</option>
-				<option value="esperto">Esperto (15 parole, 150 lettere)</option>
-				<option value="leggenda">Leggenda (25 parole, 200 lettere)</option>
-			</select>
-		</div>
-		
-		<button onclick="generaTabella()">Genera tabella</button>
-	</div>
-	<div>
 		<div id="table"></div>
 	</div>
 </div>
