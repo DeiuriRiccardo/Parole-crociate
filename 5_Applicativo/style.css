@@ -1,5 +1,5 @@
 body{
-    background-color: #bbb;
+    background-color: #ccc;
     font-family: Arial, Helvetica, sans-serif;
     margin: 0;
 }
@@ -11,7 +11,8 @@ body{
 
 #titlePage{
     margin-top: 0;
-    padding-top: 4vh;
+    margin-bottom: 10vh;
+    padding-top: 5vh;
     font-size: 5vh;
     text-transform: uppercase;
     text-align: center;
@@ -27,5 +28,28 @@ body{
     margin-bottom: 3vh;
 }
 
+#content {
+    display: flex;
+    justify-content: space-evenly;
+}
 
+/* Stile table */
+#table {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    border: 0px solid black; /* viene aggiunto lo spessore in js*/
+    padding: 1vh;
+}
 
+#table td{
+    padding: 6px 8px;
+}
+
+/* Stile Lista Parole */
+#list{
+    font-size: 20px;
+    padding: 10px;
+    padding-left: 20px;
+    column-count: 2;
+    column-gap: 4vh;
+}
