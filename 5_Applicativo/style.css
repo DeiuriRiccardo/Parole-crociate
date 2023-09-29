@@ -32,12 +32,12 @@ body{
     display: flex;
     justify-content: space-evenly;
 }
-/* Stile table */
 
+/* Stile table */
 #table {
     font-family: 'Courier New', Courier, monospace;
     font-weight: bold;
-    border: 0px solid black;
+    border: 0px solid black; /* viene aggiunto lo spessore in js*/
     padding: 1vh;
 }
 
@@ -45,3 +45,11 @@ body{
     padding: 6px 8px;
 }
 
+/* Stile Lista Parole */
+#list{
+    font-size: 20px;
+    padding: 10px;
+    padding-left: 20px;
+    column-count: 2;
+    column-gap: 4vh;
+}
