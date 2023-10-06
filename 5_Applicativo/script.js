@@ -100,8 +100,8 @@ function leggiContenuto(){
                     i--;
                 }
             }
-            console.log(parole);
-            console.log(numeroParole);
+            //console.log(parole);
+            //console.log(numeroParole);
             resolve(parole);
         };
         reader.readAsText(file);
@@ -114,6 +114,71 @@ async function leggo(){
 }
     
 
+function inserisciLettere(lettere, contenuto, posX, posY, direction){
+    var memory1 = -1;
+    var memory2 = -1;
+    var recalc = false;
+    for (let m = 0; m < lettere.length; m++) {
+        // non si deve sovrapporre
+        if (contenuto[posY][posX] == null) {
+            contenuto[posY][posX] = lettere[m];
+        }else if(contenuto[posY][posX] == lettere[m]){
+            if(direction > 3){
+                memory2 = posY;
+                memory1 = posX;
+            }else if(direction > 1){
+                memory1 = posY;
+            }else{
+                memory1 = posX;
+            }
+        }else{
+            if(m == 0){
+                recalc = true;
+            }else{
+                // cancella le lettere aggiunte fino a quel momento
+                for (let g = m; g > 0; g--) {
+                    if(direction>5){
+                        posY++;
+                        posX--;
+                    }else if(direction > 3){
+                        posY--;
+                        posX--;
+                    }else if(direction > 1){
+                        posY--;
+                    }else{
+                        posX--;
+                    }
+                    if(memory1 != posX){
+                        if(direction > 3){
+                            if(memory2 != posY){
+                                contenuto[posY][posX] = null;
+                            }
+                        }else{
+                            contenuto[posY][posX] = null;
+                        }
+                    }
+                    recalc = true;
+                }
+            }
+        }
+        if(recalc){
+            return true;
+        }
+        
+        if(direction>5){
+            posY--;
+            posX++;
+        }else if(direction > 3){
+            posY++;
+            posX++;
+        }else if(direction > 1){
+            posY++;
+        }else {
+            posX++;
+        }
+    }
+    return contenuto;
+}
 
 function popolaTabella(parole) {
     var [altezza, larghezza] = elaboraDifficolta();
@@ -139,10 +204,7 @@ function popolaTabella(parole) {
             interrupt = 0;
             svuotaTabella();
             generaParole();
-
         }
-        console.log(interrupt);
-        var recalc = false;
         var lettere = parole[j].toUpperCase().split("");
         var direction = parseInt(Math.random()*8);
         if(direction == 0 || direction == 1){ // orizzontale
@@ -150,195 +212,57 @@ function popolaTabella(parole) {
             var posX = parseInt(Math.random()*(larghezza+1-lettere.length));
             var posY = parseInt(Math.random()*altezza);
             console.log( `${parole[j]} ${direction} ${posX}:${posY}`);
-            var memoryX = -1;
             if(direction == 1){ // invertito
                 lettere.reverse();
             }
-            for (let m = 0; m < lettere.length; m++) {
-                for (let i = 0; i < contenuto.length; i++) {
-                    for (let n = 0; n < contenuto[i].length; n++) {
-
-                        if(i == posY && n == posX){
-                            // non si deve sovrapporre
-                            if (contenuto[i][n] == null) {
-                                contenuto[i][n] = lettere[m];
-                                break;
-                            }else if(contenuto[i][n] == lettere[m]){
-                                memoryX = n;
-                                break;
-                            }else{
-                                if(m == 0){
-                                    recalc = true;
-                                }else{
-                                    // cancella le lettere aggiunte fino a quel momento
-                                    for (let g = m; g > 0; g--) {
-                                        n--;
-                                        if(memoryX != n){
-                                            contenuto[i][n] = null;
-                                        }
-                                        recalc = true;
-                                    }
-                                    break;
-                                }
-                            }
-                        }
-                    
-                    }
-                }
-                if(recalc){
-                    j--;
-                    break;
-                }
-                posX++;
+            var variable = inserisciLettere(lettere, contenuto, posX, posY, direction);
+            console.log(variable);
+            if(variable == true){
+                j--;
+            }else{
+                contenuto = variable;
             }
         }else if(direction == 2 || direction == 3){ // verticale
             // deve iniziare in una posiziona in cui ci stia tutta la parola 
             var posX = parseInt(Math.random()*larghezza);
             var posY = parseInt(Math.random()*(altezza+1-lettere.length));
-            console.log( `${parole[j]} ${direction} ${posX}:${posY}`);            var memoryY = -1;
+            console.log( `${parole[j]} ${direction} ${posX}:${posY}`);
             if(direction == 3){ // invertito
                 lettere.reverse();
             }
-            for (let m = 0; m < lettere.length; m++) {
-                for (let i = 0; i < contenuto.length; i++) {
-                    for (let n = 0; n < contenuto[i].length; n++) {
-                        
-                        if(i == posY && n == posX){
-                            // non si deve sovrapporre
-                            if (contenuto[i][n] == null) {
-                                contenuto[i][n] = lettere[m];
-                                break;
-                            }else if(contenuto[i][n] == lettere[m]){
-                                memoryY = i;
-                                break;
-                            }else{
-                                if(m == 0){
-                                    recalc = true;
-                                }else{
-                                    for (let g = m; g > 0; g--) {
-                                        i--;
-                                        if(memoryY != i){
-                                            contenuto[i][n] = null;
-                                        }
-                                        recalc = true;
-                                    }
-                                    break;
-                                }
-                            }
-                            
-                        }
-                    }
-                    if(recalc){
-                        break;
-                    }
-                }
-                if(recalc){
-                    j--;
-                    break;
-                }
-                posY++;
+            var variable = inserisciLettere(lettere, contenuto, posX, posY, direction);
+            if(variable == true){
+                j--;
+            }else{
+                contenuto = variable;
             }
         }else if(direction == 4 || direction == 5){ // diagonale verso destra
             // deve iniziare in una posiziona in cui ci stia tutta la parola 
             var posX = parseInt(Math.random()*(larghezza+1-lettere.length));
             var posY = parseInt(Math.random()*(altezza+1-lettere.length));
-            console.log( `${parole[j]} ${direction} ${posX}:${posY}`);            var memoryX = -1;
-            var memoryY = -1;
+            console.log( `${parole[j]} ${direction} ${posX}:${posY}`);
             if(direction == 5){ // invertito
                 lettere.reverse();
             }
-            for (let m = 0; m < lettere.length; m++) {
-                for (let i = 0; i < contenuto.length; i++) {
-                    for (let n = 0; n < contenuto[i].length; n++) {
-                        
-                        if(i == posY && n == posX){
-                            // non si deve sovrapporre
-                            if (contenuto[i][n] == null) {
-                                contenuto[i][n] = lettere[m];
-                                break;
-                            }else if(contenuto[i][n] == lettere[m]){
-                                memoryX = n;
-                                memoryY = i;
-                                break;
-                            }else{
-                                if(m == 0){
-                                    recalc = true;
-                                }else{
-                                    for (let g = m; g > 0; g--) {
-                                        n--;
-                                        i--;
-                                        if(!(memoryX == n && memoryY == i)){
-                                            contenuto[i][n] = null;
-                                        }
-                                        recalc = true;
-                                    }
-                                    break;
-                                }
-                            }
-                            
-                        }
-                    }
-                    if(recalc){
-                        break;
-                    }
-                }
-                if(recalc){
-                    j--;
-                    break;
-                }
-                posX++;
-                posY++;
+            var variable = inserisciLettere(lettere, contenuto, posY, posX, direction);
+            if(variable == true){
+                j--;
+            }else{
+                contenuto = variable;
             }
         }else if(direction == 6 || direction == 7){ // diagonale verso sinistra
             // deve iniziare in una posiziona in cui ci stia tutta la parola 
             var posX = lettere.length-1 + parseInt(Math.random()*(larghezza-lettere.length));
             var posY = parseInt(Math.random()*(altezza+1-lettere.length));
-            console.log( `${parole[j]} ${direction} ${posX}:${posY}`);            var memoryX = -1;
-            var memoryY = -1;
+            console.log( `${parole[j]} ${direction} ${posX}:${posY}`);
             if(direction == 7){ // invertito
                 lettere.reverse();
             }
-            for (let m = 0; m < lettere.length; m++) {
-                for (let i = 0; i < contenuto.length; i++) {
-                    for (let n = 0; n < contenuto[i].length; n++) {
-                        
-                        if(i == posY && n == posX){
-                            // non si deve sovrapporre
-                            if (contenuto[i][n] == null) {
-                                contenuto[i][n] = lettere[m];
-                                break;
-                            }else if(contenuto[i][n] == lettere[m]){
-                                memoryX = n;
-                                memoryY = i;
-                                break;
-                            }else{
-                                if(m == 0){
-                                    recalc = true;
-                                }else{
-                                    for (let g = m; g > 0; g--) {
-                                        n++;
-                                        i--;
-                                        if(!(memoryX == n && memoryY == i)){
-                                            contenuto[i][n] = null;
-                                        }
-                                        recalc = true;
-                                    }
-                                    break;
-                                }
-                            }
-                            
-                        }
-                    }
-                    if(recalc){
-                        break;
-                    }
-                }
-                if(recalc){
-                    j--;
-                    break;
-                }
-                posX--;
-                posY++;
+            var variable = inserisciLettere(lettere, contenuto, posY, posX, direction);
+            if(variable == true){
+                j--;
+            }else{
+                contenuto = variable;
             }
         }
     }
