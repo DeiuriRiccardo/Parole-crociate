@@ -12,7 +12,7 @@ function elaboraDifficolta(option){
         var num = 0;
         switch(difficolta){
             case "principiante":
-                num = 7;
+                num = 8; // 13
                 break;
             case "dilettante":
                 num = 10;
@@ -113,7 +113,18 @@ async function leggo(){
     return x;
 }
     
-
+/**
+ * Questa funzione serve a inserire le lettere 
+ * nell'array bidimensionale evitando le sovrapposizioni
+ * 
+ * @param lettere sono le lettere da inserire
+ * @param contenuto array bidimensionale di char
+ * @param posX posizione x dove inserire la lettera
+ * @param posY posizione y dove inserire la lettera
+ * @param direction direzione in cui inserire le lettere
+ * @returns true se la parola non va bene
+ *          oppure il contenuto (array) se va tutto bene 
+ */
 function inserisciLettere(lettere, contenuto, posX, posY, direction){
     var memory1 = -1;
     var memory2 = -1;
@@ -180,12 +191,21 @@ function inserisciLettere(lettere, contenuto, posX, posY, direction){
     return contenuto;
 }
 
+/**
+ * Questa funzione serve a popolare l'array bidimensionale
+ * con i caratteri delle parole da inserire.
+ * 
+ * @param parole è l'array di parole
+ */
 function popolaTabella(parole) {
     var [altezza, larghezza] = elaboraDifficolta();
     
     var contenuto = [altezza];
     svuotaTabella();
 
+    /**
+     * Questa funzione riempe la tabella di null
+     */
     function svuotaTabella(){
         for (let i = 0; i < altezza; i++) {
             contenuto[i] = new Array(larghezza);
@@ -274,12 +294,19 @@ function popolaTabella(parole) {
 
 
     // inserimento dell'array di parole nella tabella HTML
+    var modalita = document.getElementById('modalita');
     var tr = document.querySelectorAll("tr");
     for (let i = 0; i < contenuto.length; i++) {
         var td = tr[i].getElementsByTagName("td");
         for (let n = 0; n < contenuto[i].length; n++) {
             if(contenuto[i][n] == null){
-                contenuto[i][n] = alfabeto[parseInt(Math.random()*alfabeto.length)];
+                if(modalita.value == "bambini"){
+                    contenuto[i][n] = alfabeto[parseInt(Math.random()*alfabeto.length)];
+                }else{
+                    // conto char rimanenti
+                    // prendo una parola
+                    // e inserisco i caratteri negli spazi
+                }
                 td[n].style.color = "red";
             }else{
                 td[n].style.color = "black";
@@ -289,6 +316,12 @@ function popolaTabella(parole) {
     }
 }
 
+/*
+ * Questa funzione stampa la lista delle parole inserite
+ * nella tabella.
+ * 
+ * @param parole è l'array di parole 
+ */
 function stampaLista(parole){
     var list = document.getElementById('list');
     list.innerHTML = "";
