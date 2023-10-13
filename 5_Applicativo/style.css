@@ -22,6 +22,18 @@ body{
     border: 2px solid red;
     max-width: 60vh;
     padding: 10vh;
+    position: absolute;
+    left: 200px;
+}
+
+#buttons{
+    position: absolute;
+    left: 0;
+    top: 25vh;
+}
+
+#menuButton{
+    background-image: url(Image/menu.png);
 }
 
 .containerInput {

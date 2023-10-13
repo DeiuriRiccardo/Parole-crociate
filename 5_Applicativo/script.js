@@ -65,26 +65,31 @@ function generaTabella(){
     tabella.innerHTML = table;
     tabella.style.borderWidth = "2px";
 
-    generaParole();
+    var numeroParole = elaboraDifficolta("parole");
+    generaParole(numeroParole);
 }
 
-function generaParole(){
+function generaParole(numeroParole, contenuto){
     var parole = [];
-    leggo().then(value => {
+    leggo(numeroParole).then(value => {
         for (let i = 0; i < value.length; i++) {
             parole.push(value[i]);
         }
-        popolaTabella(parole);
-        stampaLista(parole);
+        if(numeroParole > 1){
+            console.log(contenuto);
+            popolaTabella(parole, numeroParole);
+            stampaLista(parole);
+        }else{
+            restituisci(parole, contenuto);
+        }
     });
 }
 
-function leggiContenuto(){
+function leggiContenuto(numeroParole){
     return new Promise((resolve) => {
         var input = document.getElementById('fileInput');
         var file = input.files[0];
         var reader = new FileReader();
-        var numeroParole = elaboraDifficolta("parole");
         var [x, y] = elaboraDifficolta();
         var maxChar = Math.min(x, y);
         var parole = [];
@@ -108,8 +113,8 @@ function leggiContenuto(){
     })
 }
 
-async function leggo(){
-    const x = await leggiContenuto();
+async function leggo(numeroParole){
+    const x = await leggiContenuto(numeroParole);
     return x;
 }
 
@@ -183,7 +188,7 @@ function inserisciLettere(lettere, contenuto, posX, posY, direction){
  * 
  * @param parole è l'array di parole
  */
-function popolaTabella(parole) {
+function popolaTabella(parole, numeroParole) {
     var [altezza, larghezza] = elaboraDifficolta();
     
     var contenuto = [altezza];
@@ -209,7 +214,7 @@ function popolaTabella(parole) {
         if(interrupt > 1000){
             interrupt = 0;
             svuotaTabella();
-            generaParole();
+            generaParole(numeroParole);
         }
         var lettere = parole[j].toUpperCase().split("");
         var direction = parseInt(Math.random()*8);
@@ -283,16 +288,18 @@ function stampaTabella(contenuto){
     // inserimento dell'array di parole nella tabella HTML
     var modalita = document.getElementById('modalita');
     var tr = document.querySelectorAll("tr");
+    if(modalita.value == "adulti"){
+        gestisciModalita(contenuto);
+        // conto char rimanenti
+        // prendo una parola
+        // e inserisco i caratteri negli spazi
+    }
     for (let i = 0; i < contenuto.length; i++) {
         var td = tr[i].getElementsByTagName("td");
         for (let n = 0; n < contenuto[i].length; n++) {
             if(contenuto[i][n] == null){
                 if(modalita.value == "bambini"){
                     contenuto[i][n] = alfabeto[parseInt(Math.random()*alfabeto.length)];
-                }else{
-                    // conto char rimanenti
-                    // prendo una parola
-                    // e inserisco i caratteri negli spazi
                 }
                 td[n].style.color = "red";
             }else{
@@ -303,8 +310,33 @@ function stampaTabella(contenuto){
     }
 }
 
+function gestisciModalita(contenuto){
+    var spaziVuoti = 0;
+    for (let i = 0; i < contenuto.length; i++) {
+        for (let n = 0; n < contenuto[i].length; n++) {
+            if(contenuto[i][n] == null){
+                spaziVuoti++;
+            }
+        }
+    }
+    generaParole(1, contenuto);
+}
+function restituisci(parole, contenuto){
+    console.log(parole, contenuto);
+    var lettere = parole[0].split("");
+    var m = 0;
+    for (let i = 0; i < contenuto.length; i++) {
+        for (let n = 0; n < contenuto[i].length; n++) {
+            if(contenuto[i][n] == null){
+                contenuto[i][n] = lettere[m];
+                m++;
+            }
+        }
+    }
+    // return contenuto
+}
 
-/*
+/**
  * Questa funzione stampa la lista delle parole inserite
  * nella tabella.
  * 
