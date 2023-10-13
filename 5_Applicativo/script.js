@@ -112,10 +112,44 @@ async function leggo(){
     const x = await leggiContenuto();
     return x;
 }
-    
+
+/**
+ * Questa funzione serve a verificare se si può inserire
+ * la parola nella posizione data, se sì ritorna true.
+ * 
+ * @param lettere sono le lettere da inserire
+ * @param contenuto array bidimensionale di char
+ * @param posX posizione x dove inserire la lettera
+ * @param posY posizione y dove inserire la lettera
+ * @param direction direzione in cui inserire le lettere
+ * @returns true se la parola non va bene
+ *          oppure il contenuto (array) se va tutto bene 
+ */
+function controlloLettere(lettere, contenuto, posX, posY, direction){
+    for (let m = 0; m < lettere.length; m++) {
+        // non si deve sovrapporre
+        if(contenuto[posY][posX] != lettere[m] && contenuto[posY][posX] != null){
+            return false;
+        }
+        if(direction>5){
+            posY++;
+            posX--;
+        }else if(direction > 3){
+            posY++;
+            posX++;
+        }else if(direction > 1){
+            posY++;
+        }else {
+            posX++;
+        }
+    }
+    return true;
+}
+
+
 /**
  * Questa funzione serve a inserire le lettere 
- * nell'array bidimensionale evitando le sovrapposizioni
+ * nell'array bidimensionale
  * 
  * @param lettere sono le lettere da inserire
  * @param contenuto array bidimensionale di char
@@ -126,59 +160,11 @@ async function leggo(){
  *          oppure il contenuto (array) se va tutto bene 
  */
 function inserisciLettere(lettere, contenuto, posX, posY, direction){
-    var memory1 = -1;
-    var memory2 = -1;
-    var recalc = false;
     for (let m = 0; m < lettere.length; m++) {
-        // non si deve sovrapporre
-        if (contenuto[posY][posX] == null) {
-            contenuto[posY][posX] = lettere[m];
-        }else if(contenuto[posY][posX] == lettere[m]){
-            if(direction > 3){
-                memory2 = posY;
-                memory1 = posX;
-            }else if(direction > 1){
-                memory1 = posY;
-            }else{
-                memory1 = posX;
-            }
-        }else{
-            if(m == 0){
-                recalc = true;
-            }else{
-                // cancella le lettere aggiunte fino a quel momento
-                for (let g = m; g > 0; g--) {
-                    if(direction>5){
-                        posY++;
-                        posX--;
-                    }else if(direction > 3){
-                        posY--;
-                        posX--;
-                    }else if(direction > 1){
-                        posY--;
-                    }else{
-                        posX--;
-                    }
-                    if(memory1 != posX){
-                        if(direction > 3){
-                            if(memory2 != posY){
-                                contenuto[posY][posX] = null;
-                            }
-                        }else{
-                            contenuto[posY][posX] = null;
-                        }
-                    }
-                    recalc = true;
-                }
-            }
-        }
-        if(recalc){
-            return true;
-        }
-        
+        contenuto[posY][posX] = lettere[m];
         if(direction>5){
-            posY--;
-            posX++;
+            posY++;
+            posX--;
         }else if(direction > 3){
             posY++;
             posX++;
@@ -235,12 +221,11 @@ function popolaTabella(parole) {
             if(direction == 1){ // invertito
                 lettere.reverse();
             }
-            var variable = inserisciLettere(lettere, contenuto, posX, posY, direction);
-            console.log(variable);
-            if(variable == true){
-                j--;
+            //console.log(variable);
+            if(controlloLettere(lettere, contenuto, posX, posY, direction)){
+                contenuto = inserisciLettere(lettere, contenuto, posX, posY, direction);
             }else{
-                contenuto = variable;
+                j--;
             }
         }else if(direction == 2 || direction == 3){ // verticale
             // deve iniziare in una posiziona in cui ci stia tutta la parola 
@@ -250,11 +235,10 @@ function popolaTabella(parole) {
             if(direction == 3){ // invertito
                 lettere.reverse();
             }
-            var variable = inserisciLettere(lettere, contenuto, posX, posY, direction);
-            if(variable == true){
-                j--;
+            if(controlloLettere(lettere, contenuto, posX, posY, direction)){
+                contenuto = inserisciLettere(lettere, contenuto, posX, posY, direction);
             }else{
-                contenuto = variable;
+                j--;
             }
         }else if(direction == 4 || direction == 5){ // diagonale verso destra
             // deve iniziare in una posiziona in cui ci stia tutta la parola 
@@ -264,11 +248,10 @@ function popolaTabella(parole) {
             if(direction == 5){ // invertito
                 lettere.reverse();
             }
-            var variable = inserisciLettere(lettere, contenuto, posY, posX, direction);
-            if(variable == true){
-                j--;
+            if(controlloLettere(lettere, contenuto, posX, posY, direction)){
+                contenuto = inserisciLettere(lettere, contenuto, posX, posY, direction);
             }else{
-                contenuto = variable;
+                j--;
             }
         }else if(direction == 6 || direction == 7){ // diagonale verso sinistra
             // deve iniziare in una posiziona in cui ci stia tutta la parola 
@@ -278,16 +261,20 @@ function popolaTabella(parole) {
             if(direction == 7){ // invertito
                 lettere.reverse();
             }
-            var variable = inserisciLettere(lettere, contenuto, posY, posX, direction);
-            if(variable == true){
-                j--;
+            if(controlloLettere(lettere, contenuto, posX, posY, direction)){
+                contenuto = inserisciLettere(lettere, contenuto, posX, posY, direction);
             }else{
-                contenuto = variable;
+                j--;
             }
         }
     }
     console.log(contenuto);
     
+    stampaTabella(contenuto);
+}
+
+function stampaTabella(contenuto){
+
     var alfabeto = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 
                     'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 
                     'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
@@ -315,6 +302,7 @@ function popolaTabella(parole) {
         }
     }
 }
+
 
 /*
  * Questa funzione stampa la lista delle parole inserite
