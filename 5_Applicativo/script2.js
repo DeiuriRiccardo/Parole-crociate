@@ -67,58 +67,55 @@ function generaTabella(){
     document.getElementById('containerTabella').style.borderWidth = "2px";
 
     var numeroParole = elaboraDifficolta("parole");
-    generaParole(numeroParole);
+    leggo(numeroParole);
 }
 
-function generaParole(numeroParole, contenuto){
-    var parole = [];
-    leggo(numeroParole).then(value => {
-        for (let i = 0; i < value.length; i++) {
-            parole.push(value[i]);
-        }
-        if(numeroParole > 1){
-            console.log(contenuto);
-            console.log(parole);
-            popolaTabella(parole, numeroParole);
-            stampaLista(parole);
-        }else{
-            restituisci(parole, contenuto);
-        }
-    });
-}
-
-
-function leggiContenuto(numeroParole){
+function leggiContenuto(){
     return new Promise((resolve) => {
         var input = document.getElementById('fileInput');
         var file = input.files[0];
-        var reader = new FileReader();
-        var [x, y] = elaboraDifficolta();
-        var maxChar = Math.min(x, y);
-        var parole = [];
-        reader.onload = function() {
-            var testo = reader.result;
-            var paroleFile = testo.split('\n');
-            
-            for (let i = 0; i < numeroParole; i++){
-                var parola = paroleFile[parseInt(Math.random()*paroleFile.length)];
-                if(parola.length > 2 && parola.length <= maxChar){
-                    parole[i] = parola;
-                }else{
-                    i--;
-                }
-            }
-            //console.log(parole);
-            //console.log(numeroParole);
-            resolve(parole);
+        const xhttp = new XMLHttpRequest();
+        xhttp.onload = function() {
+            // prendo il testo del file e lo inserisco in un div
+            // per poi riprenderlo
+            var text = this.responseText;
+            document.getElementById('divVuoto').innerHTML = text;
+            resolve();
         };
-        reader.readAsText(file);
+        xhttp.open("GET", "280000_parole_italiane.txt");
+        xhttp.send();
     })
 }
 
-async function leggo(numeroParole){
-    const x = await leggiContenuto(numeroParole);
-    return x;
+async function leggo(numeroParole, spaziVuoti){
+    await this.leggiContenuto();
+    var dizionario = document.getElementById('divVuoto').innerHTML.split("\n");
+    var [x, y] = elaboraDifficolta();
+    var maxChar = Math.min(x, y);
+    var parole = [];
+    if(numeroParole == 1){
+        var continua = true;
+        while(continua){
+            var parola = dizionario[parseInt(Math.random()*dizionario.length)];
+            if(parola.length == spaziVuoti){
+                continua = false;
+                parole[0] = parola;
+            }
+        }
+    }else{
+        for (let i = 0; i < numeroParole; i++){
+            var parola = dizionario[parseInt(Math.random()*dizionario.length)];
+            if(parola.length > 2 && parola.length <= maxChar){
+                parole[i] = parola;
+            }else{
+                i--;
+            }
+        }
+    }
+    document.getElementById('divVuoto').innerHTML = parole;
+    if(spaziVuoti == undefined){
+        chiamaLeggo();
+    }else{}
 }
 
 /**
@@ -185,18 +182,23 @@ function inserisciLettere(lettere, contenuto, posX, posY, direction){
     return contenuto;
 }
 
+function chiamaLeggo(){
+    var parole = document.getElementById('divVuoto').innerHTML.split(",");
+    popolaTabella(parole);
+}
+
 /**
  * Questa funzione serve a popolare l'array bidimensionale
  * con i caratteri delle parole da inserire.
  * 
- * @param parole è l'array di parole
  */
-function popolaTabella(parole, numeroParole) {
+function popolaTabella(parole) {
+    var numeroParole = elaboraDifficolta("parole");
     var [altezza, larghezza] = elaboraDifficolta();
     
     var contenuto = [altezza];
     svuotaTabella();
-
+    console.log(parole);
     /**
      * Questa funzione riempe la tabella di null
      */
@@ -217,7 +219,7 @@ function popolaTabella(parole, numeroParole) {
         if(interrupt > 1000){
             interrupt = 0;
             svuotaTabella();
-            generaParole(numeroParole);
+            leggo(numeroParole);
         }
         var lettere = parole[j].toUpperCase().split("");
         var direction = parseInt(Math.random()*8);
@@ -229,7 +231,6 @@ function popolaTabella(parole, numeroParole) {
             if(direction == 1){ // invertito
                 lettere.reverse();
             }
-            //console.log(variable);
             if(controlloLettere(lettere, contenuto, posX, posY, direction)){
                 contenuto = inserisciLettere(lettere, contenuto, posX, posY, direction);
             }else{
@@ -276,9 +277,10 @@ function popolaTabella(parole, numeroParole) {
             }
         }
     }
-    console.log(contenuto);
+    //console.log(contenuto);
     
     stampaTabella(contenuto);
+    stampaLista(parole);
 }
 
 function stampaTabella(contenuto){
@@ -292,10 +294,9 @@ function stampaTabella(contenuto){
     var modalita = document.getElementById('modalita');
     var tr = document.querySelectorAll("tr");
     if(modalita.value == "adulti"){
-        gestisciModalita(contenuto);
-        // conto char rimanenti
-        // prendo una parola
-        // e inserisco i caratteri negli spazi
+        console.log(contenuto);
+        contenuto = gestisciModalita(contenuto);
+        console.log(contenuto);
     }
     for (let i = 0; i < contenuto.length; i++) {
         var td = tr[i].getElementsByTagName("td");
@@ -317,26 +318,29 @@ function gestisciModalita(contenuto){
     var spaziVuoti = 0;
     for (let i = 0; i < contenuto.length; i++) {
         for (let n = 0; n < contenuto[i].length; n++) {
-            if(contenuto[i][n] == null){
+            if(contenuto[i][n] == undefined){
                 spaziVuoti++;
             }
         }
     }
-    console.log(generaParole(1, contenuto));
-}
-function restituisci(parole, contenuto){
-    console.log(parole, contenuto);
-    var lettere = parole[0].split("");
+    if(spaziVuoti > 25){
+        spaziVuoti = 25;
+    }
+    console.log(spaziVuoti);
+    leggo(1, spaziVuoti);
+    var parole = document.getElementById('divVuoto').innerHTML;
+    console.log(parole);
+    var lettere = parole.split("");
     var m = 0;
     for (let i = 0; i < contenuto.length; i++) {
         for (let n = 0; n < contenuto[i].length; n++) {
-            if(contenuto[i][n] == null){
+            if(contenuto[i][n] == undefined){
                 contenuto[i][n] = lettere[m];
                 m++;
             }
         }
     }
-    // return contenuto
+    return contenuto;
 }
 
 /**

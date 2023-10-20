@@ -19,25 +19,53 @@ body{
 }
 
 #input {
-    border: 2px solid red;
+    background-color: #777;
     max-width: 60vh;
-    padding: 10vh;
+    padding-left: 10vh;
+    padding-top: 15vh;
     position: absolute;
-    left: 200px;
+    left: 0px;
+    height: 50vh;
 }
 
 #buttons{
     position: absolute;
-    left: 0;
+    left: 2vh;
     top: 25vh;
+    z-index: 2;
+    cursor: pointer;
+    padding: 3px;
+    border: 2px solid transparent;
+}
+
+#buttons:hover {
+    border: 2px solid #033dff;
 }
 
 #menuButton{
     background-image: url(Image/menu.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    display: none;
+    width:  40px;
+    height: 40px;
+}
+
+#closeButton{
+    background-image: url(Image/X.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    width:  30px;
+    height: 30px;
 }
 
 .containerInput {
     margin-bottom: 3vh;
+}
+
+#containerTabella {
+    padding: 1vh;
+    border: 0px solid #000; /* viene aggiunto lo spessore in js*/
 }
 
 #content {
@@ -49,17 +77,18 @@ body{
 #table {
     font-family: 'Courier New', Courier, monospace;
     font-weight: bold;
-    border: 0px solid black; /* viene aggiunto lo spessore in js*/
+    border: 0px solid #033dff; /* viene aggiunto lo spessore in js*/
     padding: 1vh;
+    font-size: 20px;
 }
 
 #table td{
-    padding: 6px 8px;
+    padding: 8px 10px;
 }
 
 /* Stile Lista Parole */
 #list{
-    font-size: 18px;
+    font-size: 20px;
     padding: 10px;
     padding-left: 20px;
     column-count: 2;
