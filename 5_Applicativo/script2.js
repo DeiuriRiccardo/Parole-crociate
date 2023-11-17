@@ -10,21 +10,26 @@ function elaboraDifficolta(option){
         return column;
     }else if(option == "parole"){
         var num = 0;
+        var millisec = 0;
         switch(difficolta){
             case "principiante":
-                num = 10; // 10
+                num = 10;
+                millisec = 500;
                 break;
             case "dilettante":
-                num = 10;
+                num = 14;
+                millisec = 2000;
                 break;
             case "esperto":
-                num = 15;
+                num = 17;
+                millisec = 3500;
                 break;
             case "leggenda":
-                num = 25;
+                num = 20;
+                millisec = 5000;
                 break;
         }
-        return num;
+        return [num,millisec];
     }else{
         var itable = 0;
         var ntable = 0;
@@ -52,6 +57,7 @@ function elaboraDifficolta(option){
 }
 
 function generaTabella(){
+    mostraLoader();
     var [itable, ntable] = elaboraDifficolta();
     var table = "<table>";
     for (let i = 0; i < itable; i++) {
@@ -66,57 +72,90 @@ function generaTabella(){
     tabella.style.borderWidth = "2px";
     document.getElementById('containerTabella').style.borderWidth = "2px";
 
-    var numeroParole = elaboraDifficolta("parole");
+    var [numeroParole,millisec] = elaboraDifficolta("parole");
     leggo(numeroParole);
+    
+    //setTimeout(togliLoader, millisec);
+    togliLoader();
 }
 
-function leggiContenuto(){
-    return new Promise((resolve) => {
+
+let contenutoDizionario = null;
+
+function leggiContenuto() {
+    return new Promise((resolve, reject) => {
+        // Se il contenuto del dizionario è già stato letto, restituiscilo direttamente
+        if (contenutoDizionario !== null) {
+            resolve();
+            return;
+        }
+
         var input = document.getElementById('fileInput');
         var file = input.files[0];
         const xhttp = new XMLHttpRequest();
-        xhttp.onload = function() {
-            // prendo il testo del file e lo inserisco in un div
-            // per poi riprenderlo
+        xhttp.onload = function () {
             var text = this.responseText;
-            document.getElementById('divVuoto').innerHTML = text;
+
+            // Memorizza il contenuto del dizionario
+            contenutoDizionario = text;
+
             resolve();
+        };
+        xhttp.onerror = function () {
+            reject(new Error('Errore durante il caricamento del file.'));
         };
         xhttp.open("GET", "280000_parole_italiane.txt");
         xhttp.send();
-    })
+    });
 }
 
-async function leggo(numeroParole, spaziVuoti){
-    await this.leggiContenuto();
-    var dizionario = document.getElementById('divVuoto').innerHTML.split("\n");
-    var [x, y] = elaboraDifficolta();
-    var maxChar = Math.min(x, y);
-    var parole = [];
-    if(numeroParole == 1){
-        var continua = true;
-        while(continua){
-            var parola = dizionario[parseInt(Math.random()*dizionario.length)];
-            if(parola.length == spaziVuoti){
-                continua = false;
-                parole[0] = parola;
-            }
-        }
-    }else{
-        for (let i = 0; i < numeroParole; i++){
-            var parola = dizionario[parseInt(Math.random()*dizionario.length)];
-            if(parola.length > 2 && parola.length <= maxChar){
-                parole[i] = parola;
+
+async function leggo(numeroParole, contenuto) {
+    try {
+        await leggiContenuto();
+
+        var dizionario = contenutoDizionario.split("\n");
+        var [x, y] = elaboraDifficolta();
+        var maxChar = Math.min(x, y);
+        var parole = [];
+        if(numeroParole == 1){
+            var spaziVuoti = calcolaSpaziVuoti(contenuto);
+            if(spaziVuoti > 25){
+                //spaziVuoti = 25;
+                console.log("25+");
             }else{
-                i--;
+            var continua = true;
+                while(continua){
+                    var parola = dizionario[parseInt(Math.random()*dizionario.length)];
+                    if(parola.length == spaziVuoti){
+                        continua = false;
+                        parole[0] = parola;
+                    }
+                }
+            }
+        }else{
+            for (let i = 0; i < numeroParole; i++){
+                var parola = dizionario[parseInt(Math.random()*dizionario.length)];
+                if(parola.length > 2 && parola.length <= maxChar){
+                    parole[i] = parola;
+                }else{
+                    i--;
+                }
             }
         }
+
+        document.getElementById('divVuoto').innerHTML = parole;
+
+        if (contenuto == undefined) {
+            chiamaPopolaTabella();
+        } else {
+            stampaTabella(contenuto);
+        }
+    } catch (error) {
+        console.error(error);
     }
-    document.getElementById('divVuoto').innerHTML = parole;
-    if(spaziVuoti == undefined){
-        chiamaLeggo();
-    }else{}
 }
+
 
 /**
  * Questa funzione serve a verificare se si può inserire
@@ -182,7 +221,7 @@ function inserisciLettere(lettere, contenuto, posX, posY, direction){
     return contenuto;
 }
 
-function chiamaLeggo(){
+function chiamaPopolaTabella(){
     var parole = document.getElementById('divVuoto').innerHTML.split(",");
     popolaTabella(parole);
 }
@@ -193,9 +232,8 @@ function chiamaLeggo(){
  * 
  */
 function popolaTabella(parole) {
-    var numeroParole = elaboraDifficolta("parole");
+    var [numeroParole,millisec] = elaboraDifficolta("parole");
     var [altezza, larghezza] = elaboraDifficolta();
-    
     var contenuto = [altezza];
     svuotaTabella();
     console.log(parole);
@@ -216,10 +254,11 @@ function popolaTabella(parole) {
         /* interrupt serve a interrompere i cicli e rigenerare le parole
            nel caso in cui si generasse un ciclo infinito */
         interrupt++;
-        if(interrupt > 1000){
+        if(interrupt > 700){
             interrupt = 0;
             svuotaTabella();
             leggo(numeroParole);
+            return;
         }
         var lettere = parole[j].toUpperCase().split("");
         var direction = parseInt(Math.random()*8);
@@ -227,7 +266,6 @@ function popolaTabella(parole) {
             // deve iniziare in una posiziona in cui ci stia tutta la parola 
             var posX = parseInt(Math.random()*(larghezza+1-lettere.length));
             var posY = parseInt(Math.random()*altezza);
-            console.log( `${parole[j]} ${direction} ${posX}:${posY}`);
             if(direction == 1){ // invertito
                 lettere.reverse();
             }
@@ -240,7 +278,6 @@ function popolaTabella(parole) {
             // deve iniziare in una posiziona in cui ci stia tutta la parola 
             var posX = parseInt(Math.random()*larghezza);
             var posY = parseInt(Math.random()*(altezza+1-lettere.length));
-            console.log( `${parole[j]} ${direction} ${posX}:${posY}`);
             if(direction == 3){ // invertito
                 lettere.reverse();
             }
@@ -253,7 +290,6 @@ function popolaTabella(parole) {
             // deve iniziare in una posiziona in cui ci stia tutta la parola 
             var posX = parseInt(Math.random()*(larghezza+1-lettere.length));
             var posY = parseInt(Math.random()*(altezza+1-lettere.length));
-            console.log( `${parole[j]} ${direction} ${posX}:${posY}`);
             if(direction == 5){ // invertito
                 lettere.reverse();
             }
@@ -266,7 +302,6 @@ function popolaTabella(parole) {
             // deve iniziare in una posiziona in cui ci stia tutta la parola 
             var posX = lettere.length-1 + parseInt(Math.random()*(larghezza-lettere.length));
             var posY = parseInt(Math.random()*(altezza+1-lettere.length));
-            console.log( `${parole[j]} ${direction} ${posX}:${posY}`);
             if(direction == 7){ // invertito
                 lettere.reverse();
             }
@@ -277,14 +312,40 @@ function popolaTabella(parole) {
             }
         }
     }
-    //console.log(contenuto);
-    
-    stampaTabella(contenuto);
+    var modalita = document.getElementById('modalita');
+    if(calcolaSpaziVuoti(contenuto) > 25 && modalita.value == 'adulti'){
+        // faccio cambiare le parole della tabella e la rigenero
+        svuotaTabella();
+        console.log("recalc");
+        leggo(numeroParole);
+    }
+    gestisciModalita(contenuto);
     stampaLista(parole);
 }
 
-function stampaTabella(contenuto){
+function calcolaSpaziVuoti(contenuto){
+    var spaziVuoti = 0;
+    for (let i = 0; i < contenuto.length; i++) {
+        for (let n = 0; n < contenuto[i].length; n++) {
+            if(contenuto[i][n] == undefined || contenuto[i][n] == null){
+                spaziVuoti++;
+            }
+        }
+    }
+    console.log(spaziVuoti);
+    return spaziVuoti;
+}
 
+function gestisciModalita(contenuto){
+    var modalita = document.getElementById('modalita');
+    if(modalita.value == "adulti"){
+        leggo(1, contenuto);
+    }else{
+        stampaTabella(contenuto);
+    }
+}
+
+function stampaTabella(contenuto){
     var alfabeto = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 
                     'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 
                     'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
@@ -293,54 +354,30 @@ function stampaTabella(contenuto){
     // inserimento dell'array di parole nella tabella HTML
     var modalita = document.getElementById('modalita');
     var tr = document.querySelectorAll("tr");
-    if(modalita.value == "adulti"){
-        console.log(contenuto);
-        contenuto = gestisciModalita(contenuto);
-        console.log(contenuto);
-    }
+    
+    var parola = document.getElementById('divVuoto').innerHTML;
+    var lettere = parola.split("");
+    var m = 0;
+    var div = document.getElementById('parolaDifficile');
+    document.getElementById('parolaDifficile').innerHTML = "Parola difficile: ";
     for (let i = 0; i < contenuto.length; i++) {
         var td = tr[i].getElementsByTagName("td");
         for (let n = 0; n < contenuto[i].length; n++) {
-            if(contenuto[i][n] == null){
+            if(contenuto[i][n] != null){
+                td[n].style.color = "black";
+            }else{
                 if(modalita.value == "bambini"){
                     contenuto[i][n] = alfabeto[parseInt(Math.random()*alfabeto.length)];
+                }else{
+                    div.innerHTML = div.innerHTML + "_ ";
+                    contenuto[i][n] = lettere[m];
+                    m++;
                 }
                 td[n].style.color = "red";
-            }else{
-                td[n].style.color = "black";
             }
             td[n].textContent = contenuto[i][n];
         }
     }
-}
-
-function gestisciModalita(contenuto){
-    var spaziVuoti = 0;
-    for (let i = 0; i < contenuto.length; i++) {
-        for (let n = 0; n < contenuto[i].length; n++) {
-            if(contenuto[i][n] == undefined){
-                spaziVuoti++;
-            }
-        }
-    }
-    if(spaziVuoti > 25){
-        spaziVuoti = 25;
-    }
-    console.log(spaziVuoti);
-    leggo(1, spaziVuoti);
-    var parole = document.getElementById('divVuoto').innerHTML;
-    console.log(parole);
-    var lettere = parole.split("");
-    var m = 0;
-    for (let i = 0; i < contenuto.length; i++) {
-        for (let n = 0; n < contenuto[i].length; n++) {
-            if(contenuto[i][n] == undefined){
-                contenuto[i][n] = lettere[m];
-                m++;
-            }
-        }
-    }
-    return contenuto;
 }
 
 /**
@@ -356,4 +393,14 @@ function stampaLista(parole){
     for (let j = 0; j < parole.length; j++) {
         list.innerHTML += parole[j] + "<br>";
     }
+}
+
+function mostraLoader(){
+    document.getElementById('containerTabella').style.display = "none";
+    document.getElementById('loader').style.display = "block";
+}
+
+function togliLoader(){
+    document.getElementById('containerTabella').style.display = "block";
+    document.getElementById('loader').style.display = "none";
 }

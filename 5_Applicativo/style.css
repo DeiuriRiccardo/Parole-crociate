@@ -11,9 +11,9 @@ body{
 
 #titlePage{
     margin-top: 0;
-    margin-bottom: 10vh;
+    margin-bottom: 5vh;
     padding-top: 5vh;
-    font-size: 5vh;
+    font-size: 4vh;
     text-transform: uppercase;
     text-align: center;
 }
@@ -26,12 +26,13 @@ body{
     position: absolute;
     left: 0px;
     height: 50vh;
+    font-size: 3vh;
 }
 
 #buttons{
     position: absolute;
     left: 2vh;
-    top: 25vh;
+    top: 20vh;
     z-index: 2;
     cursor: pointer;
     padding: 3px;
@@ -70,7 +71,7 @@ body{
 
 #content {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
 }
 
 /* Stile table */
@@ -79,7 +80,8 @@ body{
     font-weight: bold;
     border: 0px solid #033dff; /* viene aggiunto lo spessore in js*/
     padding: 1vh;
-    font-size: 20px;
+    font-size: 3vh;
+    max-width: max-content;
 }
 
 #table td{
@@ -88,9 +90,15 @@ body{
 
 /* Stile Lista Parole */
 #list{
-    font-size: 20px;
+    font-size: 3vh;
     padding: 10px;
     padding-left: 20px;
     column-count: 2;
     column-gap: 4vh;
+}
+
+#parolaDifficile {
+    font-size: 3vh;
+    padding: 10px;
+    font-weight: bold;
 }

@@ -14,11 +14,31 @@
 	<link rel="icon" type="image/ico" href="favicon.ico">
 
     <link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="loader/loader.css">
     <style>
-        
+        @media only screen and (max-width: 1250px) and (min-width: 900px)  {
+			#content{
+				justify-content: right;
+				margin-right: 10%;
+			}
+		}
+		@media only screen and (max-width: 899px) {
+			#input{
+				max-width: 100vh;
+				height: 100vh;
+				padding-left: 3vh;
+			}
+			#containerInput{
+				width: 100vh;
+			}
+			#titlePage{
+				margin-bottom: 0vh;
+			}
+		}
+
     </style>
 </head>
-<body >
+<body>
 <div class="container">
     <h1 id="titlePage">Parole crociate</h1>
 	<div id="content">
@@ -38,8 +58,8 @@
 			<div class="containerInput">
 				<label>Difficoltà</label>
 				<select id="difficolta">
-					<option value="principiante">Principiante (7 parole, 100 lettere)</option>
-					<option value="dilettante">Dilettante (10 parole, 120 lettere)</option>
+					<option value="principiante">Principiante (10 parole, 100 lettere)</option>
+					<option value="dilettante">Dilettante (14 parole, 120 lettere)</option>
 					<option value="esperto">Esperto (15 parole, 150 lettere)</option>
 					<option value="leggenda">Leggenda (25 parole, 200 lettere)</option>
 				</select>
@@ -55,11 +75,20 @@
 			<button onclick="generaTabella()">Genera tabella</button>
 		</div>
 		<div id="containerTabella">
+			<div id="parolaDifficile"></div>
 			<div id="table"></div>
 			<div id="list"></div>
 		</div>
 		
 	</div>
+</div>
+<div id="loader" class="book">
+	<div class="book__pg-shadow"></div>
+	<div class="book__pg"></div>
+	<div class="book__pg book__pg--2"></div>
+	<div class="book__pg book__pg--3"></div>
+	<div class="book__pg book__pg--4"></div>
+	<div class="book__pg book__pg--5"></div>
 </div>
 <div id="divVuoto" style="display: none;"></div>
 <script>
