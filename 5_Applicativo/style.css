@@ -19,13 +19,13 @@ body{
 }
 
 #input {
-    background-color: #777;
+    background-color: #888;
     max-width: 60vh;
     padding-left: 10vh;
-    padding-top: 15vh;
+    padding-top: 5vh;
     position: absolute;
     left: 0px;
-    height: 50vh;
+    height: max-content;
     font-size: 3vh;
 }
 
@@ -61,12 +61,21 @@ body{
 }
 
 .containerInput {
+    display: flex;
+    align-items: center;
     margin-bottom: 3vh;
 }
 
 #containerTabella {
     padding: 1vh;
+    margin-bottom: 3vh;
     border: 0px solid #000; /* viene aggiunto lo spessore in js*/
+}
+
+#centerContent {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 }
 
 #content {
@@ -76,7 +85,6 @@ body{
 
 /* Stile table */
 #table {
-    font-family: 'Courier New', Courier, monospace;
     font-weight: bold;
     border: 0px solid #033dff; /* viene aggiunto lo spessore in js*/
     padding: 1vh;
@@ -94,11 +102,41 @@ body{
     padding: 10px;
     padding-left: 20px;
     column-count: 2;
-    column-gap: 4vh;
+    column-gap: 9vh;
 }
 
 #parolaDifficile {
     font-size: 3vh;
     padding: 10px;
     font-weight: bold;
+}
+
+/* Style buttons export */
+
+.exporting {
+    display: grid;
+    justify-content: start;
+}
+
+.export{
+    border: none;
+    border: 3px solid #5B42F3;  
+    background-color: transparent;  
+    color: #00DDEB;
+    cursor: pointer;
+    font-size: 0.7em;
+    padding: 0.2em 0.5em;
+    margin: 2px;
+}
+
+.export .text {
+    background-color: transparent;
+    width: 100%;
+    height: 100%;
+    transition: 500ms;
+}
+
+.export:hover {
+    color: #fff;
+    background-image: linear-gradient(144deg,#AF40FF, #5B42F3 50%,#00DDEB);
 }

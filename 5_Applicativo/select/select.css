@@ -1,0 +1,132 @@
+
+  
+  
+  /* ===== Select Box ===== */
+  .sel {
+    font-size: 1rem;
+    width: 200px;
+    background-color: transparent;
+    position: relative;
+    cursor: pointer;
+  }
+  
+  .sel::before {
+    position: absolute;
+    content: '\f063';
+    font-family: 'FontAwesome';
+    font-size: 1.5em;
+    color: #fff;
+    right: 20px;
+    top: calc(50% - 0.5em);
+  }
+  
+  .sel.active::before {
+    transform: rotateX(-180deg);
+  }
+  
+  .sel__placeholder {
+    display: block;
+    font-size: 1.5em;
+    color: #00DDEB;
+    padding: 0.2em 0.5em;
+    text-align: left;
+    pointer-events: none;
+    user-select: none;
+    visibility: visible;
+  }
+  
+  .sel.active .sel__placeholder {
+    visibility: hidden;
+  }
+  
+  .sel__placeholder::before {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0.2em 0.5em;
+    content: attr(data-placeholder);
+    visibility: hidden;
+  }
+  
+  .sel.active .sel__placeholder::before {
+    visibility: hidden;
+  }
+  
+  .sel__box {
+    position: absolute;
+    left: -4px;
+    display: none;
+    list-style-type: none;
+    text-align: left;
+    font-size: 0.7em;
+    background-color: #303030;
+    width: calc(100% + 8px);
+    box-sizing: border-box;
+    overflow-y: auto;
+    max-height: 300px;
+  }
+  
+  .sel.active .sel__box {
+    display: block;
+    z-index: 5;
+    animation: fadeInUp 300ms;
+  }
+
+  
+  .sel__box__options {
+    display: list-item;
+    font-size: 1.5em;
+    color: #eee;
+    padding: 0.5em 1em;
+    user-select: none;
+    border: 1px solid #5B42F3;
+  }
+  
+  .sel__box__options::after {
+    content: '\f00c';
+    font-family: 'FontAwesome';
+    font-size: 0.5em;
+    margin-left: 5px;
+    display: none;
+  }
+  
+  .sel__box__options.selected::after {
+    display: inline;
+  }
+  
+  .sel__box__options:hover {
+    background-image: linear-gradient(144deg,#AF40FF, #5B42F3 50%,#00DDEB);
+  }
+  
+  /* ----- Select Box Black Panther ----- */
+  .sel {
+    border-bottom: 4px solid #5B42F3;
+  }
+
+  
+  
+  /* ===== Keyframes ===== */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 20px, 0);
+    }
+  
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+      transform: translate3d(0, 20px, 0);
+    }
+  
+    to {
+      opacity: 0;
+    }
+  }

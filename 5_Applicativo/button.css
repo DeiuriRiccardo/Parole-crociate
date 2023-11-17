@@ -1,0 +1,104 @@
+.genera .text {
+    background-color: rgb(5, 6, 45);
+    padding: 16px 24px;
+    border-radius: 6px;
+    width: 100%;
+    height: 100%;
+    transition: 300ms;
+}
+
+.genera:hover .text {
+    background: none;
+}
+
+.genera{
+    height: 50px;
+    position: relative;
+    font-size: 20px;
+    background-image: linear-gradient(144deg,#AF40FF, #5B42F3 50%,#00DDEB);
+    color: #ccc;
+    border: none;
+    margin: auto;
+    padding: 0px;
+    overflow: hidden;
+    box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+    margin-bottom: 3vh;
+}
+.genera span:nth-child(1){
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 2px;
+    background-image: linear-gradient(to right,#AF40FF, #5B42F3 50%,#00DDEB);
+    animation: a1 2s linear infinite;
+}
+
+@keyframes a1 {
+    0%{
+        transform: translateX(-100%);
+    }
+    100%{
+        transform: translateX(100%);
+    }
+}
+
+.genera span:nth-child(2){
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 2px;
+    background-image: linear-gradient(to bottom,#AF40FF, #5B42F3 50%,#00DDEB);
+    animation: a2 2s linear infinite;
+    animation-delay: 1s;
+}
+
+@keyframes a2 {
+    0%{
+        transform: translateY(-100%);
+    }
+    100%{
+        transform: translateY(100%);
+    }
+}
+
+.genera span:nth-child(3){
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 2px;
+    background-image: linear-gradient(to left,#AF40FF, #5B42F3 50%,#00DDEB);
+    animation: a3 2s linear infinite;
+}
+
+@keyframes a3 {
+    0%{
+        transform: translateX(100%);
+    }
+    100%{
+        transform: translateX(-100%);
+    }
+}
+
+.genera span:nth-child(4){
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 100%;
+    width: 2px;
+    background-image: linear-gradient(to top,#AF40FF, #5B42F3 50%,#00DDEB);
+    animation: a4 2s linear infinite;
+    animation-delay: 1s;
+}
+
+@keyframes a4 {
+    0%{
+        transform: translateY(100%);
+    }
+    100%{
+        transform: translateY(-100%);
+    }
+}

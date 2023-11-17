@@ -13,7 +13,12 @@
 	
 	<link rel="icon" type="image/ico" href="favicon.ico">
 
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
     <link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="button.css">
+	<link rel="stylesheet" href="select/select.css">
 	<link rel="stylesheet" href="loader/loader.css">
     <style>
         @media only screen and (max-width: 1250px) and (min-width: 900px)  {
@@ -49,35 +54,61 @@
 		
 		<div id="input">
 			<div class="containerInput">
-				<label>Modalità</label>
-				<select id="modalita">
-					<option value="bambini">Bambini</option>
-					<option value="adulti">Adulti</option>
-				</select>
+				<label>Modalità: </label>
+				
+				  <div class="sel sel--black-panther">
+					<select name="modalita" id="modalita">
+						<option value="" disabled>Seleziona modalità</option>
+						<option value="bambini">Bambini</option>
+					  	<option value="adulti">Adulti</option>
+					</select>
+				  </div>
 			</div>
 			<div class="containerInput">
-				<label>Difficoltà</label>
-				<select id="difficolta">
-					<option value="principiante">Principiante (10 parole, 100 lettere)</option>
-					<option value="dilettante">Dilettante (14 parole, 120 lettere)</option>
-					<option value="esperto">Esperto (15 parole, 150 lettere)</option>
-					<option value="leggenda">Leggenda (25 parole, 200 lettere)</option>
-				</select>
+				<label>Difficoltà: </label>
+				<div class="sel sel--black-panther">
+					<select id="difficolta">
+						<option value="" disabled>Seleziona difficoltà</option>
+						<option value="principiante">Principiante</option>
+						<option value="dilettante">Dilettante</option>
+						<option value="esperto">Esperto</option>
+						<option value="leggenda">Leggenda</option>
+					</select>
+				</div>
 			</div>
 			<div class="containerInput">
-				<label>Dizionario:</label>
+				<label>Dizionario: </label>
 				<input type="file" id="fileInput" accept=".txt">
 			</div>
 			<div class="containerInput">
-				<label>Font:</label>
-				<input type="file" id="fontInput">
+				<label>Font: </label>
+				<div class="sel sel--black-panther">
+				<select id="fonts"></select></div>
 			</div>
-			<button onclick="generaTabella()">Genera tabella</button>
+			
+			<button onclick="generaTabella()" class="genera">
+				<span></span>
+				<span></span>
+				<span></span>
+				<span></span>
+				<span class="text">Genera tabella</span>
+			</button>
+			<div class="containerInput exporting">
+				<label>Export: </label>
+				<button onclick="exportTxt()" class="export">
+					<span class="text">Esporta formato txt</span>
+				</button>
+				<button onclick="exportHtml()" class="export">
+					<span class="text">Esporta formato HTML</span>
+				</button>
+			</div>
 		</div>
 		<div id="containerTabella">
 			<div id="parolaDifficile"></div>
-			<div id="table"></div>
-			<div id="list"></div>
+			<div id="centerContent">
+				<div id="table"></div>
+				<div id="list"></div>
+			</div>
 		</div>
 		
 	</div>
@@ -104,7 +135,12 @@
 	}
 
 </script>
-<script src="script2.js"></script>
 <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+<script src="script.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="font.js"></script>
+<script src="select/select.js"></script>
+<script src="export.js"></script>
 </body>
 </html>
+
