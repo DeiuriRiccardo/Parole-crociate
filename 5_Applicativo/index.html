@@ -16,10 +16,10 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 
-    <link rel="stylesheet" href="style.css">
-	<link rel="stylesheet" href="button.css">
-	<link rel="stylesheet" href="select/select.css">
-	<link rel="stylesheet" href="loader/loader.css">
+    <link rel="stylesheet" href="Css/style.css">
+	<link rel="stylesheet" href="Css/button.css">
+	<link rel="stylesheet" href="Css/select.css">
+	<link rel="stylesheet" href="Css/loader.css">
     <style>
         @media only screen and (max-width: 1250px) and (min-width: 900px)  {
 			#content{
@@ -53,12 +53,19 @@
 		</div>
 		
 		<div id="input">
+			<div class="containerInput" style="margin: 0vh;">
+				<label>Dizionario: </label>
+				<input type="file" id="fileInput" accept=".txt">
+				
+			</div>
+			<div class="containerInput">
+				<label class="avviso">*Per cambiare il dizionario è necessario prima aggiornare la pagina</label>
+			</div>
 			<div class="containerInput">
 				<label>Modalità: </label>
-				
 				  <div class="sel sel--black-panther">
 					<select name="modalita" id="modalita">
-						<option value="" disabled>Seleziona modalità</option>
+						<option value="" disabled>Bambini</option>
 						<option value="bambini">Bambini</option>
 					  	<option value="adulti">Adulti</option>
 					</select>
@@ -68,17 +75,13 @@
 				<label>Difficoltà: </label>
 				<div class="sel sel--black-panther">
 					<select id="difficolta">
-						<option value="" disabled>Seleziona difficoltà</option>
+						<option value="" disabled>Principiante</option>
 						<option value="principiante">Principiante</option>
 						<option value="dilettante">Dilettante</option>
 						<option value="esperto">Esperto</option>
 						<option value="leggenda">Leggenda</option>
 					</select>
 				</div>
-			</div>
-			<div class="containerInput">
-				<label>Dizionario: </label>
-				<input type="file" id="fileInput" accept=".txt">
 			</div>
 			<div class="containerInput">
 				<label>Font: </label>
@@ -95,10 +98,10 @@
 			</button>
 			<div class="containerInput exporting">
 				<label>Export: </label>
-				<button onclick="exportTxt()" class="export">
+				<button onclick="exportTxt()" disabled="true" class="export">
 					<span class="text">Esporta formato txt</span>
 				</button>
-				<button onclick="exportHtml()" class="export">
+				<button onclick="exportHtml()" disabled="true" class="export">
 					<span class="text">Esporta formato HTML</span>
 				</button>
 			</div>
@@ -136,11 +139,11 @@
 
 </script>
 <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
-<script src="script.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script src="font.js"></script>
-<script src="select/select.js"></script>
-<script src="export.js"></script>
+<script src="Javascript/script.js"></script>
+<script src="Javascript/font.js"></script>
+<script src="Javascript/select.js"></script>
+<script src="Javascript/export.js"></script>
 </body>
 </html>
 

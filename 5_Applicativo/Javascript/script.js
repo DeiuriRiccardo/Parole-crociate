@@ -75,6 +75,12 @@ function generaTabella(){
 
     var [numeroParole,millisec] = elaboraDifficolta("parole");
     leggo(numeroParole);
+    var exportButtons = document.querySelectorAll('.export');
+    exportButtons.forEach(button => {
+        button.removeAttribute('disabled');
+    });
+
+    setTimeout(togliLoader, 1000);
 }
 
 
@@ -113,11 +119,15 @@ function leggiContenuto() {
     });
 }
 
+/*function rimuoviAccenti(parola) {
+    var accenti = ['à', 'è', 'é', 'ì', 'ò', 'ù'];
+    var parolaSenzaAccenti = accenti.some(a => parola.includes(a)) ? parola.replace(new RegExp(accenti.join('|'), 'g'), '') : parola;
+    return parolaSenzaAccenti;
+  }*/
 
 async function leggo(numeroParole, contenuto) {
     try {
         await leggiContenuto();
-
         var dizionario = contenutoDizionario.split("\n");
         var [x, y] = elaboraDifficolta();
         var maxChar = Math.min(x, y);
@@ -127,16 +137,37 @@ async function leggo(numeroParole, contenuto) {
             var continua = true;
             while(continua){
                 var parola = dizionario[parseInt(Math.random()*dizionario.length)];
+                var paroleTabella = document.getElementById('divVuoto').innerHTML.split(",");
                 if(parola.length == spaziVuoti){
-                    continua = false;
-                    parole[0] = parola;
+                    paroleTabella.forEach(parolaLista => {
+                        if(parolaLista != parola){
+                            continua = false;
+                            parole[0] = parola;
+                        }
+                    });
                 }
             }
         }else{
             for (let i = 0; i < numeroParole; i++){
                 var parola = dizionario[parseInt(Math.random()*dizionario.length)];
                 if(parola.length > 2 && parola.length <= maxChar){
-                    parole[i] = parola;
+                    var parola_senza_accenti = parola.replace(/[àèéìòù]/, function(match) {
+                        var accentata = "àèéìòù";
+                        var senza_accenti = "aeeiou";
+                        var index = accentata.indexOf(match);
+                        return senza_accenti.charAt(index);
+                    });
+                    var isNewParola = true;
+                    parole.forEach(item => {
+                        if(item == parola_senza_accenti.trim()){
+                            isNewParola = false;
+                        }
+                    });
+                    if(isNewParola){
+                        parole[i] = parola_senza_accenti.trim();
+                    }else{
+                        i--;
+                    }
                 }else{
                     i--;
                 }
@@ -317,6 +348,7 @@ function popolaTabella(parole) {
         svuotaTabella();
         console.log("recalc - troppi spazi vuoti");
         leggo(numeroParole);
+        return;
     }
     gestisciModalita(contenuto);
     stampaLista(parole);
@@ -382,7 +414,6 @@ function stampaTabella(contenuto){
             td[n].textContent = contenuto[i][n];
         }
     }
-    togliLoader();
 }
 
 /**
@@ -394,6 +425,7 @@ function stampaTabella(contenuto){
 function stampaLista(parole){
     var list = document.getElementById('list');
     list.innerHTML = "";
+    parole = parole.sort();
     list.style.columnCount = elaboraDifficolta("column");
     for (let j = 0; j < parole.length; j++) {
         list.innerHTML += parole[j] + "<br>";
