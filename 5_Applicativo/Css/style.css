@@ -35,6 +35,10 @@ body{
     text-shadow:0px 0px 10px #fff;
 }
 
+#soluzione {
+    display: none;
+}
+
 #buttons{
     position: absolute;
     left: 2vh;
@@ -50,7 +54,7 @@ body{
 }
 
 #menuButton{
-    background-image: url(Image/menu.png);
+    background-image: url(../Image/menu.png);
     background-size: contain;
     background-repeat: no-repeat;
     display: none;
@@ -59,7 +63,7 @@ body{
 }
 
 #closeButton{
-    background-image: url(Image/X.png);
+    background-image: url(../Image/X.png);
     background-size: contain;
     background-repeat: no-repeat;
     width:  30px;
