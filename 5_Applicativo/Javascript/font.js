@@ -65,7 +65,6 @@ fonts.forEach(font => {
         <span style="font-family:${font};">${font}</span>
         </option>`;
 });
-
 document.getElementById('fonts').innerHTML = select;
 
 function setFont(){

@@ -1,6 +1,4 @@
 
-  
-  
   /* ===== Select Box ===== */
   .sel {
     font-size: 1rem;
@@ -15,7 +13,7 @@
     content: '\f063';
     font-family: 'FontAwesome';
     font-size: 1.5em;
-    color: #fff;
+    color: #5B42F3;
     right: 20px;
     top: calc(50% - 0.5em);
   }
@@ -27,7 +25,7 @@
   .sel__placeholder {
     display: block;
     font-size: 1.5em;
-    color: #00DDEB;
+    color: #5B42F3;
     padding: 0.2em 0.5em;
     text-align: left;
     pointer-events: none;

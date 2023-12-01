@@ -21,23 +21,31 @@
 	<link rel="stylesheet" href="Css/select.css">
 	<link rel="stylesheet" href="Css/loader.css">
     <style>
-        @media only screen and (max-width: 1250px) and (min-width: 900px)  {
+        @media only screen and (max-width: 1650px) and (min-width: 1000px)  {
 			#content{
 				justify-content: right;
 				margin-right: 10%;
 			}
 		}
-		@media only screen and (max-width: 899px) {
+		@media only screen and (max-width: 999px) {
 			#input{
-				max-width: 100vh;
-				height: 100vh;
-				padding-left: 3vh;
+				width: 100%;
+				height: 100%;
 			}
 			#containerInput{
-				width: 100vh;
+				width: max-content;
 			}
 			#titlePage{
-				margin-bottom: 0vh;
+				margin-bottom: 2vh;
+			}
+		}
+		@media print {
+			#input {
+				display: none;
+			}
+			#containerTabella{
+				display: block;
+				font-size: 2vh;
 			}
 		}
 
@@ -59,7 +67,7 @@
 				
 			</div>
 			<div class="containerInput">
-				<label class="avviso">*Per cambiare il dizionario è necessario prima aggiornare la pagina</label>
+				<label class="avviso">*Per cambiare il dizionario è necessario <br> prima aggiornare la pagina</label>
 			</div>
 			<div class="containerInput">
 				<label>Modalità: </label>

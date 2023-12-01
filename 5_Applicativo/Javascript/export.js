@@ -10,17 +10,12 @@ function exportTxt(){
         txt += table[i]+" ";
     }
         
-    var list = document.getElementById('list').innerHTML.split('<br>');
+    var list = document.querySelectorAll('#list span');
     list.forEach(element => {
-        txt += "\n" + element;
+        txt += "\n" + element.innerHTML;
     });
-    
 
-    console.log(txt);
-    
-
-
-    //trasformi in array di byte  
+    //trasformi in stringa di byte  
     var bytes = new Uint8Array(txt.length);
     for (var i = 0; i < txt.length; i++) {
         var ascii = txt.charCodeAt(i);
@@ -48,7 +43,7 @@ function exportHtml(){
     var list = document.getElementById('list').innerHTML;
     content += "</tr></table><div id='list'>" +list+"</div></body></html>";
     
-    //trasformi in array di byte  
+    //trasformi in stringa di byte  
     var bytes = new Uint8Array(content.length);
     for (var i = 0; i < content.length; i++) {
         var ascii = content.charCodeAt(i);

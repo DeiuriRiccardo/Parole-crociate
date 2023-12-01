@@ -1,5 +1,5 @@
 body{
-    background-color: #ccc;
+    background-color: #e4e4e4;
     font-family: Arial, Helvetica, sans-serif;
     margin: 0;
 }
@@ -18,11 +18,14 @@ body{
     text-align: center;
 }
 
+
+
 #input {
-    background-color: #888;
-    max-width: 60vh;
-    padding-left: 10vh;
-    padding-top: 5vh;
+    box-sizing: border-box;
+    background-color: #bbbaba;
+    border: 2px solid #000;
+    padding: 10vh;
+    padding-bottom: 2vh;
     position: absolute;
     left: 0px;
     height: max-content;
@@ -30,9 +33,8 @@ body{
 }
 
 .avviso {
-    font-size: 1.1vh;
-    color: #e01616;
-    text-shadow:0px 0px 10px #fff;
+    font-size: 14px;
+    color: #8f1111;
 }
 
 #soluzione {
@@ -73,10 +75,13 @@ body{
 .containerInput {
     display: flex;
     align-items: center;
+    justify-self: right;
     margin-bottom: 3vh;
+    width: max-content;
 }
 
 #containerTabella {
+    font-size: 3vh;
     padding: 1vh;
     margin-bottom: 3vh;
     border: 0px solid #000; /* viene aggiunto lo spessore in js*/
@@ -98,7 +103,6 @@ body{
     font-weight: bold;
     border: 0px solid #033dff; /* viene aggiunto lo spessore in js*/
     padding: 1vh;
-    font-size: 3vh;
     max-width: max-content;
 }
 
@@ -108,7 +112,6 @@ body{
 
 /* Stile Lista Parole */
 #list{
-    font-size: 3vh;
     padding: 10px;
     padding-left: 20px;
     column-count: 2;
@@ -116,7 +119,6 @@ body{
 }
 
 #parolaDifficile {
-    font-size: 3vh;
     padding: 10px;
     font-weight: bold;
 }
@@ -132,7 +134,7 @@ body{
     border: none;
     border: 3px solid #5B42F3;  
     background-color: transparent;  
-    color: #00DDEB;
+    color: #000;
     cursor: pointer;
     font-size: 0.7em;
     padding: 0.2em 0.5em;
