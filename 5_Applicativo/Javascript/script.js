@@ -7,37 +7,24 @@ function elaboraDifficolta(option){
     var difficolta = document.getElementById("difficolta").value;
     if(option == "column"){
         var column = 2;
-        if(difficolta == "leggenda"){
-            column = 3;
-        }else if(difficolta != "principiante"){
+        if(difficolta != "principiante"){
             column = 3;
         }
         return column;
     }else if(option == "parole"){
         var num = 0;
-        var millisec = 0;
         switch(difficolta){
             case "principiante":
                 num = 10;
-                millisec = 500;
                 break;
             case "dilettante":
                 num = 14;
-                millisec = 2000;
                 break;
             case "esperto":
                 num = 17;
-                millisec = 3500;
-                break;
-            case "leggenda":
-                num = 22;
-                millisec = 5000;
                 break;
         }
-        if(modalita == 'bambini'){
-            num -= 0;
-        }
-        return [num,millisec];
+        return [num];
     }else{
         var itable = 0;
         var ntable = 0;
@@ -52,10 +39,6 @@ function elaboraDifficolta(option){
                 break;
             case "esperto":
                 itable = 12;
-                ntable = 15;
-                break;
-            case "leggenda":
-                itable = 15;
                 ntable = 15;
                 break;
         }
@@ -89,7 +72,7 @@ function setup(){
 
     modalita = document.getElementById('modalita').value;
 
-    var [numeroParole,millisec] = elaboraDifficolta("parole");
+    var numeroParole = elaboraDifficolta("parole");
     leggo(numeroParole);
 
     var exportButtons = document.querySelectorAll('.export');
@@ -165,7 +148,7 @@ function leggiContenuto() {
         };
         
         if(file != undefined){
-            xhttp.open("GET", file.name);
+            xhttp.open("GET", "Dizionari/"+file.name);
         }else{
             xhttp.open("GET", "Dizionari/280000_parole_italiane.txt");
         }
@@ -208,30 +191,8 @@ async function leggo(numeroParole) {
         parolaDifficile = parolePossibili[parseInt(Math.random()*parolePossibili.length)];
         stampaTabella();
     }else{
-        
-        /*do{
-            var [x, y] = elaboraDifficolta();
-            parole = [];
-            var caratteriTotali = 0;
-            var spaziMassimi = 0;
-            if(modalita == 'adulti'){
-                spaziMassimi = trovaParoleConSpaziVuoti();
-            }
-            var caratteriMinimi = (x*y)-spaziMassimi;
-            for (let i = 0; i < numeroParole; i++){
-                for(let i =0; i < numeroParole; i++){
-                    var parola = prendiParola(dizionario);
-                    if(parola != undefined){
-                        parole[i] = parola;
-                    }else{
-                        i--;
-                    }
-                }
-            }
-            
-        }while(modalita == 'adulti' && caratteriMinimi >= caratteriTotali);*/
         var dizionario = contenutoDizionario.split("\n");
-        if(dizionario.length < numeroParole){
+        if(dizionario.length < (numeroParole + 10)){
             window.alert("Dizionario troppo piccolo per questa difficoltà.");
             return;
         }
@@ -267,8 +228,8 @@ function prendiParola(dizionario){
     var maxChar = Math.min(x, y);
     var parola = dizionario[parseInt(Math.random()*dizionario.length)];
     if(parola.length > 2 && parola.length <= maxChar){
-        var parola_senza_accenti = parola.replace(/[àèéìòù]/, function(match) {
-            var accentata = "àèéìòù";
+        var parola_senza_accenti = parola.replace(/[àèéìòù']/, function(match) {
+            var accentata = "àèéìòù'";
             var senza_accenti = "aeeiou";
             var index = accentata.indexOf(match);
             return senza_accenti.charAt(index);
@@ -292,7 +253,6 @@ function prendiParola(dizionario){
  * la parola nella posizione data, se sì ritorna true.
  * 
  * @param lettere sono le lettere da inserire
- * @param contenuto array bidimensionale di char
  * @param posX posizione x dove inserire la lettera
  * @param posY posizione y dove inserire la lettera
  * @param direction direzione in cui inserire le lettere
@@ -326,12 +286,10 @@ function controlloLettere(lettere, posX, posY, direction){
  * nell'array bidimensionale
  * 
  * @param lettere sono le lettere da inserire
- * @param contenuto array bidimensionale di char
  * @param posX posizione x dove inserire la lettera
  * @param posY posizione y dove inserire la lettera
  * @param direction direzione in cui inserire le lettere
- * @returns true se la parola non va bene
- *          oppure il contenuto (array) se va tutto bene 
+ * @param j numero della parola, serve per la classe e la soluzione 
  */
 function inserisciLettere(lettere, posX, posY, direction, j){
     for (let m = 0; m < lettere.length; m++) {
@@ -356,7 +314,7 @@ function inserisciLettere(lettere, posX, posY, direction, j){
  * 
  */
 function popolaTabella() {
-    var [numeroParole,millisec] = elaboraDifficolta("parole");
+    var numeroParole = elaboraDifficolta("parole");
     var [altezza, larghezza] = elaboraDifficolta();
     contenuto = [altezza];
     svuotaTabella();
@@ -453,7 +411,6 @@ function calcolaSpaziVuoti(){
             }
         }
     }
-    console.log(spaziVuoti);
     return spaziVuoti;
 }
 
@@ -494,7 +451,6 @@ function stampaTabella(){
                     contenuto[i][n] = alfabeto[parseInt(Math.random()*alfabeto.length)];
                 }else{
                     div.innerHTML = div.innerHTML + "_ ";
-                    console.log(lettere[m]);
                     contenuto[i][n] = lettere[m].toUpperCase();
                     m++;
                     td[n].setAttribute('class', 'lettereEstranee');
@@ -518,7 +474,7 @@ function stampaLista(){
     }
 }
 
-function mostraLoader(){
+async function mostraLoader(){
     document.getElementById('containerTabella').style.display = "none";
     document.getElementById('loader').style.display = "block";
 }

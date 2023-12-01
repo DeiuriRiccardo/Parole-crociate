@@ -52,7 +52,7 @@ body{
 }
 
 #buttons:hover {
-    border: 2px solid #033dff;
+    border: 2px solid #5B42F3;
 }
 
 #menuButton{
@@ -101,7 +101,7 @@ body{
 /* Stile table */
 #table {
     font-weight: bold;
-    border: 0px solid #033dff; /* viene aggiunto lo spessore in js*/
+    border: 0px solid #5B42F3; /* viene aggiunto lo spessore in js*/
     padding: 1vh;
     max-width: max-content;
 }
